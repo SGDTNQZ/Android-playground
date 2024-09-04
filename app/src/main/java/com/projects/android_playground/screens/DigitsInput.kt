@@ -148,6 +148,7 @@ fun DigitsInputScreen (navController: NavController){
                 )
             }
 
+//            BMI display
             Spacer(modifier = Modifier.size(5.dp))
             Row (
                 modifier = Modifier
