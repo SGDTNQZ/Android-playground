@@ -123,33 +123,8 @@ fun DigitsInputScreen (navController: NavController){
                 )
             }
 
-            Spacer(modifier = Modifier.size(10.dp))
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ){
-                Text(
-                    text ="Weight:  ${weight?.takeIf { it != 0.toFloat() } ?: 0} kg",
-                    fontSize = 16.sp
-                )
-
-            }
-
-            Spacer(modifier = Modifier.size(5.dp))
-            Row (
-                modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-            ){
-                Text(
-                    text ="Height:  ${height?.takeIf { it != 0.toFloat() } ?: 0} cm",
-                    fontSize = 16.sp
-                )
-            }
-
 //            BMI display
-            Spacer(modifier = Modifier.size(5.dp))
+            Spacer(modifier = Modifier.size(20.dp))
             Row (
                 modifier = Modifier
                     .fillMaxWidth(),
