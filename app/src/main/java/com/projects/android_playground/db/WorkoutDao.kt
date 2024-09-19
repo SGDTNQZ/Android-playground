@@ -16,4 +16,7 @@ interface WorkoutDao {
 
     @Query("DELETE FROM WORKOUTENTITY WHERE id = :id ")
     fun deleteWorkout(id : Int)
+
+    @Query("SELECT bodyPart FROM WorkoutEntity WHERE id = :id")
+    fun getBodyPart(id : Int): LiveData<String>
 }

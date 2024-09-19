@@ -1,6 +1,5 @@
 package com.projects.android_playground.navigation
 
-import WorkoutViewModel
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -8,9 +7,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.projects.android_playground.screens.ButtonScreen
 import com.projects.android_playground.screens.DigitsInputScreen
+import com.projects.android_playground.screens.ExerciseScreen
 import com.projects.android_playground.screens.StartScreen
 import com.projects.android_playground.screens.WorkoutArchiveScreen
-import com.projects.android_playground.screens.WorkoutScreen
 
 @Composable
 fun AppNavigation() {
@@ -22,6 +21,6 @@ fun AppNavigation() {
         composable(Screen.WorkoutArchive.route){ WorkoutArchiveScreen(
             navController = navController,
         )}
-        composable(Screen.WorkoutScreen.route){ WorkoutScreen(navController = navController)}
+        composable(Screen.WorkoutScreen.route){ ExerciseScreen(navController = navController) }
     }
 }

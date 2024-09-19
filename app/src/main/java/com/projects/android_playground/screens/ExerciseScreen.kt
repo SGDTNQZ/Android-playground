@@ -1,11 +1,13 @@
 package com.projects.android_playground.screens
 
+import WorkoutViewModel
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,6 +20,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Divider
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -34,15 +38,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 
 @Composable
-fun WorkoutScreen(navController: NavController){
+fun ExerciseScreen(navController: NavController,
+                   workoutViewModel: WorkoutViewModel = viewModel(),){
 
     var exerciseName by remember {
         mutableStateOf("")
@@ -56,6 +65,15 @@ fun WorkoutScreen(navController: NavController){
     var set by remember {
         mutableIntStateOf(0)
     }
+    // Observing the list of body parts from the WorkoutViewModel
+    val bodyPart  = " Body Part Name"
+
+    var exerciseForm by remember {
+        mutableStateOf(false)
+    }
+
+
+
     Column (modifier = Modifier.fillMaxSize()
     ){
         FloatingActionButton(
@@ -74,7 +92,9 @@ fun WorkoutScreen(navController: NavController){
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ){
-            Text(text = "Body part")
+            Text(text = bodyPart,
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp)
         }
         ExerciseHeader()
         Row (
@@ -84,30 +104,9 @@ fun WorkoutScreen(navController: NavController){
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ){
-            OutlinedTextField(
-                modifier = Modifier.weight(1f),
-                value = exerciseName,
-                onValueChange = {exerciseName = it },
-                label = { Text(text = "Name")},
-            )
-            OutlinedTextField(
-                modifier = Modifier.weight(0.5f),
-                value = if(weight == 0f)"" else weight.toString(),
-                onValueChange = {weight = it.toFloatOrNull() ?: 0f},
-                label = { Text(text = "Weight")},
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                )
-            OutlinedTextField(
-                modifier = Modifier.weight(0.4f),
-                value = if(reps == 0)"" else reps.toString(),
-                onValueChange = {reps = it.toIntOrNull() ?: 0},
-                label = { Text(text = "Reps")},
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                )
             FloatingActionButton(
-                onClick = { /*TODO*/ },
+                onClick = { exerciseForm = true },
                 modifier = Modifier
-                    .weight(0.2f)
                     .height(IntrinsicSize.Min),
                 ) {
                 Icon(
@@ -115,6 +114,55 @@ fun WorkoutScreen(navController: NavController){
                     contentDescription = "Add exercise"
                 )
             }
+        }
+
+        if (exerciseForm){
+            AlertDialog(
+                onDismissRequest = { exerciseForm = false },
+                title = {
+                    Text(text = "Exercise Form")
+                        },
+                text = {
+                    Column {
+                        OutlinedTextField(
+                            value = exerciseName,
+                            onValueChange = { exerciseName = it },
+                            singleLine = true,
+                            label = { Text(text = "Exercise name") }
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        OutlinedTextField(
+                            value = if (weight == 0f) "" else weight.toString(),
+                            onValueChange = { input ->
+                                weight = input.toFloatOrNull() ?: 0f
+                            },
+                            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                            label = { Text(text = "Weight") }
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        OutlinedTextField(
+                            value = if (reps == 0) "" else reps.toString(),
+                            onValueChange = { input ->
+                                reps = input.toIntOrNull() ?: 0
+                            },
+                            keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
+                            label = { Text(text = "Reps") }
+                        )
+                        Spacer(modifier = Modifier.height(8.dp))
+                    }
+                },
+                confirmButton = {
+                    Button(onClick = {})
+                    { Text("Add") }
+                                },
+                dismissButton = {
+                    Button(onClick = { exerciseForm = false }) {
+                        Text("Cancel")
+                    }
+                }
+            )
         }
         Column(
             modifier = Modifier

@@ -8,7 +8,9 @@ import kotlinx.coroutines.launch
 import java.time.Instant
 import java.util.Date
 
-class WorkoutViewModel : ViewModel() {
+class WorkoutViewModel(
+//    private val workoutId : Long
+) : ViewModel() {
 
     private val workoutDao = MainApplication.database.getWorkoutDao()
 
@@ -31,5 +33,9 @@ class WorkoutViewModel : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             workoutDao.deleteWorkout(id)
         }
+    }
+
+    fun getBodyPart(id: Int): LiveData<String> {
+        return workoutDao.getBodyPart(id)
     }
 }

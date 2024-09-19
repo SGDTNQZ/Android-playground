@@ -1,6 +1,8 @@
 package com.projects.android_playground.screens
 
 import WorkoutViewModel
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -40,6 +42,8 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 @Composable
 fun WorkoutArchiveScreen(navController: NavController, workoutViewModel: WorkoutViewModel = viewModel()) {
@@ -69,19 +73,33 @@ fun WorkoutArchiveScreen(navController: NavController, workoutViewModel: Workout
             // Display the workout list
             workoutList.forEach { workout ->
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth()
+                        .clickable { navController.navigate("exercise_screen") }
+                        .background(MaterialTheme.colorScheme.primary)
+                        .padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+
                 ) {
                     Spacer(modifier = Modifier.size(10.dp))
-                    Text(text = workout.bodyPart, fontSize = 16.sp)
+                    Text(
+                        text = workout.bodyPart,
+                        fontSize = 16.sp)
                     Spacer(modifier = Modifier.size(10.dp))
-                    Text(text = workout.createdAt.toString())
+                    Text(
+                        text = SimpleDateFormat("yyyy-MM-dd",
+                        Locale.getDefault()).format(workout.createdAt)
+                    )
                     Spacer(modifier = Modifier.size(10.dp))
-                    IconButton(onClick = { workoutViewModel.deleteWorkout(workout.id) }) {
+                    IconButton(
+                        onClick = { workoutViewModel.deleteWorkout(workout.id) }
+                    )
+                    {
                         Icon(Icons.Default.Delete, contentDescription = "Delete workout")
                     }
                 }
+                Spacer(modifier = Modifier.size(10.dp))
+
             }
 
             Spacer(modifier = Modifier.weight(1f))
@@ -108,7 +126,8 @@ fun WorkoutArchiveScreen(navController: NavController, workoutViewModel: Workout
                     OutlinedTextField(
                         value = bodyPart,
                         onValueChange = { bodyPart = it },
-                        label = { Text(text = "Body Part") }
+                        label = { Text(text = "Body Part") },
+                        singleLine = true
                     )
                 },
                 confirmButton = {
@@ -117,7 +136,7 @@ fun WorkoutArchiveScreen(navController: NavController, workoutViewModel: Workout
                             if (bodyPart.isNotBlank()) {
                                 workoutViewModel.addWorkout(bodyPart)
                                 showBodyPartDialog = false
-                                navController.navigate("workout_screen")
+                                navController.navigate("exercise_screen")
                             }
                         }
                     ) {
