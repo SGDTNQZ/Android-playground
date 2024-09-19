@@ -14,7 +14,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
@@ -34,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.Divider
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -74,9 +77,9 @@ fun WorkoutArchiveScreen(navController: NavController, workoutViewModel: Workout
             workoutList.forEach { workout ->
                 Row(
                     modifier = Modifier.fillMaxWidth()
+                        .height(IntrinsicSize.Min)
                         .clickable { navController.navigate("exercise_screen") }
-                        .background(MaterialTheme.colorScheme.primary)
-                        .padding(16.dp),
+                        .background(MaterialTheme.colorScheme.primary),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceEvenly,
 
@@ -84,18 +87,34 @@ fun WorkoutArchiveScreen(navController: NavController, workoutViewModel: Workout
                     Spacer(modifier = Modifier.size(10.dp))
                     Text(
                         text = workout.bodyPart,
+                        color = Color.White,
                         fontSize = 16.sp)
-                    Spacer(modifier = Modifier.size(10.dp))
-                    Text(
-                        text = SimpleDateFormat("yyyy-MM-dd",
-                        Locale.getDefault()).format(workout.createdAt)
+                    Divider(
+                        color = Color.White,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(1.dp),
                     )
-                    Spacer(modifier = Modifier.size(10.dp))
+                    Text(
+                        text = SimpleDateFormat(
+                            "yyyy-MM-dd",Locale.getDefault()).format(workout.createdAt),
+                        color = Color.White,
+                    )
+                    Divider(
+                        color = Color.White,
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .width(1.dp),
+                    )
                     IconButton(
                         onClick = { workoutViewModel.deleteWorkout(workout.id) }
                     )
                     {
-                        Icon(Icons.Default.Delete, contentDescription = "Delete workout")
+                        Icon(
+                            Icons.Default.Delete,
+                            contentDescription = "Delete workout",
+                            tint = Color.White
+                            )
                     }
                 }
                 Spacer(modifier = Modifier.size(10.dp))
@@ -106,13 +125,14 @@ fun WorkoutArchiveScreen(navController: NavController, workoutViewModel: Workout
 
             FloatingActionButton(
                 onClick = { showBodyPartDialog = true }, // Trigger dialog
-                modifier = Modifier.size(64.dp)
+                modifier = Modifier.size(64.dp),
+                containerColor = MaterialTheme.colorScheme.primary,
+                shape = CircleShape
             ) {
                 Icon(
                     Icons.Default.AddCircle,
                     contentDescription = "Start workout",
-                    modifier = Modifier.fillMaxSize(),
-                    tint = Color.Black
+                    tint = Color.White
                 )
             }
         }

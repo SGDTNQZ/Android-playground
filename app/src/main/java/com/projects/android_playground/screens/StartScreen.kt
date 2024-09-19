@@ -62,6 +62,17 @@ fun StartScreen(navController: NavController){
              Text(text = "Open room stuff")   
             }
         }
+        Row (modifier = Modifier
+            .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text(text = "Menu playground")
+            Spacer(modifier = Modifier.size(10.dp))
+            Button(onClick = {navController.navigate("menu_screen")})
+            {
+                Text(text = "Open Menu playground")
+            }
+        }
 
 
     }

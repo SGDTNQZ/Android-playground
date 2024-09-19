@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import com.projects.android_playground.screens.ButtonScreen
 import com.projects.android_playground.screens.DigitsInputScreen
 import com.projects.android_playground.screens.ExerciseScreen
+import com.projects.android_playground.screens.MenuScreen
 import com.projects.android_playground.screens.StartScreen
 import com.projects.android_playground.screens.WorkoutArchiveScreen
 
@@ -22,5 +23,6 @@ fun AppNavigation() {
             navController = navController,
         )}
         composable(Screen.WorkoutScreen.route){ ExerciseScreen(navController = navController) }
+        composable(Screen.MenuScreen.route){ MenuScreen(navController = navController)}
     }
 }

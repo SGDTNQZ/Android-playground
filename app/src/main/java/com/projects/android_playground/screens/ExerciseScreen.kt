@@ -106,6 +106,7 @@ fun ExerciseScreen(navController: NavController,
         ){
             FloatingActionButton(
                 onClick = { exerciseForm = true },
+                containerColor = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
                     .height(IntrinsicSize.Min),
                 ) {
