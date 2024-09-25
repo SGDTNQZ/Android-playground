@@ -4,8 +4,10 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -53,6 +55,8 @@ fun MenuScreen(navController: NavController){
             Icon(Icons.Default.ArrowBack, contentDescription = "Back")
         }
     }
+
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -73,11 +77,17 @@ fun MenuScreen(navController: NavController){
         val selectedRecipeIngredients =
             pastaRecipes.find { it.name == selectedOption }?.ingredients ?: emptyList()
 
-        optionBurgerMenu(
-            burgerExpanded, { burgerExpanded = it },
-            options, selectedOption, { selectedOption = it }
-        )
+        Row (
+            horizontalArrangement = Arrangement.End
+        ){
+            optionBurgerMenu(
+                burgerExpanded, { burgerExpanded = it },
+                options, selectedOption, { selectedOption = it }
+            )
+        }
+
         Spacer(modifier = Modifier.size(10.dp))
+
 
         optionsExposedDropDownMenu(
             expanded, { expanded = it },
@@ -142,6 +152,8 @@ fun optionBurgerMenu(
         }
     }
 }
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun optionsExposedDropDownMenu(
@@ -162,6 +174,7 @@ fun optionsExposedDropDownMenu(
             readOnly = true,
             trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
             modifier = Modifier.menuAnchor()
+                .fillMaxWidth()
         )
         ExposedDropdownMenu(
             expanded = expanded,
