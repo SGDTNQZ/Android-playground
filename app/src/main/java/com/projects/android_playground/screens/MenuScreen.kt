@@ -54,70 +54,73 @@ fun MenuScreen(navController: NavController){
         ) {
             Icon(Icons.Default.ArrowBack, contentDescription = "Back")
         }
-    }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(16.dp),
+            verticalArrangement = Arrangement.Center,
+        ) {
+            val options = pastaRecipes.map{it.name}
+            var selectedOption by remember {
+                mutableStateOf(options[0])
+            }
+            var expanded by remember {
+                mutableStateOf(false)
+            }
+            var burgerExpanded by remember {
+                mutableStateOf(false)
+            }
+            val selectedRecipeIngredients =
+                pastaRecipes.find { it.name == selectedOption }?.ingredients ?: emptyList()
+
+            Row (
+                horizontalArrangement = Arrangement.End
+            ){
+                OptionBurgerMenu(
+                    burgerExpanded, { burgerExpanded = it },
+                    options, selectedOption, { selectedOption = it }
+                )
+            }
+
+            Spacer(modifier = Modifier.size(10.dp))
 
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(16.dp),
-        verticalArrangement = Arrangement.Center,
-    ) {
-        val options = pastaRecipes.map{it.name}
-        var selectedOption by remember {
-            mutableStateOf(options[0])
-        }
-        var expanded by remember {
-            mutableStateOf(false)
-        }
-        var burgerExpanded by remember {
-            mutableStateOf(false)
-        }
-        val selectedRecipeIngredients =
-            pastaRecipes.find { it.name == selectedOption }?.ingredients ?: emptyList()
 
-        Row (
-            horizontalArrangement = Arrangement.End
-        ){
-            optionBurgerMenu(
-                burgerExpanded, { burgerExpanded = it },
+            OptionsExposedDropDownMenu(
+                expanded, { expanded = it },
                 options, selectedOption, { selectedOption = it }
             )
-        }
+            Spacer(modifier = Modifier.size(10.dp))
 
-        Spacer(modifier = Modifier.size(10.dp))
-
-
-        optionsExposedDropDownMenu(
-            expanded, { expanded = it },
-            options, selectedOption, { selectedOption = it }
-        )
-        Spacer(modifier = Modifier.size(10.dp))
-
-        Text(
-            text = buildAnnotatedString {
-                append("Ingredients for ")
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)){
-                    append(selectedOption)
+            Text(
+                text = buildAnnotatedString {
+                    append("Ingredients for ")
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)){
+                        append(selectedOption)
+                    }
+                    append(":")
+                },
+                fontSize = 20.sp
+            )
+            Spacer(modifier = Modifier.size(10.dp))
+            Column{
+                selectedRecipeIngredients.forEach { ingredient ->
+                    Text(text = "- $ingredient")
+                    Spacer(modifier = Modifier.size(10.dp))
                 }
-                append(":")
-            },
-            fontSize = 20.sp
-        )
-        Spacer(modifier = Modifier.size(10.dp))
-        Column{
-            selectedRecipeIngredients.forEach { ingredient ->
-                Text(text = "- $ingredient")
-                Spacer(modifier = Modifier.size(10.dp))
             }
-        }
 
+        }
     }
+
+
+
 }
 
 @Composable
-fun optionBurgerMenu(
+fun OptionBurgerMenu(
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
     options: List<String>,
@@ -156,7 +159,7 @@ fun optionBurgerMenu(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun optionsExposedDropDownMenu(
+fun OptionsExposedDropDownMenu(
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
     options: List<String>,
@@ -206,7 +209,7 @@ val pastaRecipes = listOf(
             "Spaghetti",
             "Eggs",
             "Parmesan cheese",
-            "Pancetta",
+            "Panetta",
             "Black pepper",
             "Salt"
         )
