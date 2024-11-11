@@ -60,7 +60,6 @@ fun MenuScreen(navController: NavController){
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp),
-            verticalArrangement = Arrangement.Center,
         ) {
             val options = pastaRecipes.map{it.name}
             var selectedOption by remember {
@@ -85,8 +84,6 @@ fun MenuScreen(navController: NavController){
             }
 
             Spacer(modifier = Modifier.size(10.dp))
-
-
 
             OptionsExposedDropDownMenu(
                 expanded, { expanded = it },
